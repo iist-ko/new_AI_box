@@ -1,0 +1,29 @@
+{
+    "Example": "maker = seyeon:0  truen:1",
+    "version": "2.2.0",
+    "date": "2023-03-16",
+    "notice": {
+        "company": "IIST",
+        "phone number": "070-8290-2073"
+    },
+    "data": {
+        "0": {
+            "ip": "192.168.0.250",
+            "user_name": "root",
+            "password": "root",
+            "maker": "0"
+        },
+        "1": {
+            "ip": "192.168.0.191",
+            "user_name": "admin",
+            "password": "root",
+            "maker": "1"
+        },
+        "2": {
+            "ip": "12",
+            "user_name": "123",
+            "password": "123",
+            "maker": "0"
+        }
+    }
+}
