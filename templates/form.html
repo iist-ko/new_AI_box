@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;FWS101AI IP주소 입력</h2>
+
+<form action="/method" method="POST">
+    &emsp;&emsp;&emsp;&emsp;<label for="fname">IP주소</label><label for="fnam">
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;ID&emsp;&emsp;&nbsp;&nbsp;&emsp;&emsp;&emsp;PASSWORD&emsp;&emsp;&nbsp;&nbsp;&emsp;&emsp;&emsp;모델</label><br><br>
+        {% for i in range(16) %}
+            &emsp;<input type="text" style="width:150px;" id="name" name=ip_{{i}} value={{mylist[i][0]}}>
+            &emsp;<input type="text" style="width:100px;" id="l1name" name=id_{{i}} value={{mylist[i][1]}}>
+            &emsp;<input type="text" style="width:100px;" id="P1name" name=pwd_{{i}} value={{mylist[i][2]}}>
+            &emsp;&emsp;&emsp;<select name=mk_{{i}} id="mk1name" >
+                    {% if mylist[i][3] == "0" %}
+                    <option value="0"> FW8020</option>
+                    <option value="1"> 3204</option>
+                    <option value=""> None</option>
+                    {% elif mylist[i][3] == "1" %}
+                    <option value="1"> 3204</option>
+                    <option value="0"> FW8020</option>
+                    <option value=""> None</option>
+                    {% else %}
+                    <option value=""> None</option>
+                    <option value="0"> FW8020</option>
+                    <option value="1"> 3204</option>
+                    {% endif %}
+                  </select><br>
+        {% endfor %}
+    &emsp;&emsp;&emsp;&emsp;<br>
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="        저장        ">
+</form>
+<form action="/method3" method="POST">
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="     로그 확인    ">
+    &nbsp;
+    </form>
+<form action="/method4" method="POST">
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value=" AI Box IP변경 ">
+    &nbsp;
+    </form>
+
+</body>
+</html>
