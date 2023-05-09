@@ -1,7 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,pycharm,jupyternotebooks,cuda,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,pycharm,jupyternotebooks,cuda,visualstudiocode
 
-./test_av/*
+test_av
+.idea/*
 
 
 ### CUDA ###
