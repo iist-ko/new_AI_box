@@ -6,6 +6,7 @@ import threading
 
 from src import darknet
 from src.tools import read_json, Alarm, image_detection, check_connect
+from src.Camera import Camera
 
 pwd = "/home/iist"
 
@@ -19,7 +20,7 @@ def main():
     ip_data_len = len(ip_data)
     for i in range(ip_data_len):
         try:
-            ip_, id_, pwd_, model_ = ip_data[str(i)].values()
+            ip_, id_, pwd_, _ip_3170, _id_3170, _pwd_3170, model_ = ip_data[str(i)].values()
         except KeyError as k:
             print(f"[{k}] : json 확인")
             continue
@@ -27,7 +28,7 @@ def main():
             print(f"[{v}] : json 확인")
             continue
         if check_connect(ip_, id_, pwd_):
-            alarm.append(Alarm(ip_, id_, pwd_, model_))
+            alarm.append(Camera(ip_, id_, pwd_, _ip_3170, _id_3170, _pwd_3170, model_))
         else:
             ip_data_len -= 1
             print(f"[CON Error] {ip_}")

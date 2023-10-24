@@ -15,15 +15,20 @@ def hellohtml():
         ###################파일불러오기함수####################
         t = 0
         Rdata = read_json('rtsp.json')
-        # print(Rdata)
-        mylist = [['', '', '', ''] for i in range(16)]
+        print(Rdata)
+        mylist = [['', '', '', '', '', '', ''] for _ in range(32)]
         while t < len(Rdata):
             try:
                 Data = Rdata[str(t)]
-                mylist[t] = [Data["ip"], Data["user_name"], Data["password"], Data["maker"]]
+                print(Data)
+                mylist[t] = [Data["ip"], Data["user_name"], Data["password"],
+                             Data["ip_3170"], Data["id_3170"], Data["password_3170"], Data["maker"]]
+                print(t)
             except KeyError:
+                print("Ee")
                 break
             t += 1
+        print(mylist)
         return render_template("form.html", mylist=mylist)
 
 
@@ -45,29 +50,35 @@ def method():
             json_file.close()
         data = json_data["data"]
         index = 0
-        for i in range(16):
+        for i in range(32):
+            print(form_dict)
             if form_dict[f"ip_{i}"] == '':
                 if i < len(data):
                     del data[str(i)]
                 pass
             if i < len(data):
-                data_i = dict()
-                data_i["ip"] = form_dict[f"ip_{i}"]
-                data_i["user_name"] = form_dict[f"id_{i}"]
-                data_i["password"] = form_dict[f"pwd_{i}"]
-                data_i["maker"] = form_dict[f"mk_{i}"]
-                data[str(index)] = data_i
-                index += 1
+                if form_dict[f"ip_{i}"] != "" and form_dict[f"id_{i}"] != "" and form_dict[f"pwd_{i}"] != "":
+                    data_i = dict()
+                    data_i["ip"] = form_dict[f"ip_{i}"]
+                    data_i["user_name"] = form_dict[f"id_{i}"]
+                    data_i["password"] = form_dict[f"pwd_{i}"]
+                    data_i["maker"] = form_dict[f"mk_{i}"]
+                    data_i["ip_3170"] = form_dict[f"ip_3170_{i}"]
+                    data_i["id_3170"] = form_dict[f"id_3170_{i}"]
+                    data_i["password_3170"] = form_dict[f"pwd_3170_{i}"]
+                    data[str(index)] = data_i
+                    index += 1
             else:
                 data[str(index)] = {"ip": form_dict[f"ip_{i}"], "user_name": form_dict[f"id_{i}"],
-                                "password": form_dict[f"pwd_{i}"], "maker": form_dict[f"mk_{i}"]}
+                                    "password": form_dict[f"pwd_{i}"], "ip_3170": form_dict[f"ip_3170_{i}"],
+                                    "id_3170": form_dict[f"id_3170_{i}"],
+                                    "password_3170": form_dict[f"pwd_3170_{i}"], "maker": form_dict[f"mk_{i}"]}
                 index += 1
 
         json_data["data"] = data
         with open(os.path.join(pwd, "files/resource/rtsp.json"), 'w', encoding="utf-8") as f:
             json.dump(json_data, f, indent=4)
             f.close()
-
 
         return render_template("Success.html")
 

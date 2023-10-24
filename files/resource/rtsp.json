@@ -1,5 +1,5 @@
 {
-    "Example": "maker = seyeon:0  truen:1",
+    "Example": "maker = ptz:0  3204:1",
     "version": "2.2.0",
     "date": "2023-03-16",
     "notice": {
@@ -8,21 +8,30 @@
     },
     "data": {
         "0": {
-            "ip": "192.168.0.250",
-            "user_name": "root",
+            "ip": "192.168.0.192",
+            "user_name": "admin",
             "password": "root",
+            "ip_3170": "192.168.0.",
+            "name_3170": "",
+            "password_3170": "",
             "maker": "0"
         },
         "1": {
             "ip": "192.168.0.191",
             "user_name": "admin",
             "password": "root",
+            "ip_3170": "",
+            "name_3170": "",
+            "password_3170": "",
             "maker": "1"
         },
         "2": {
             "ip": "12",
             "user_name": "123",
             "password": "123",
+            "ip_3170": "",
+            "name_3170": "",
+            "password_3170": "",
             "maker": "0"
         }
     }

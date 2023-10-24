@@ -7,8 +7,8 @@ from requests.auth import HTTPDigestAuth
 
 from src import darknet
 
-pwd = "/home/iist"
-# pwd = os.getcwd()
+# pwd = "/home/iist"
+pwd = os.getcwd()
 
 
 def image_detection(image_path, network, class_names, class_colors, thresh):
@@ -34,7 +34,7 @@ def read_json(txt_file):
     read_data = f["data"]
     save_data = dict()
     key = 0
-    for i in range(0, 16):
+    for i in range(0, 32):
         try:
             data = read_data[str(i)]
             if data["ip"] and data["user_name"] and data["password"] and data["maker"]:
@@ -42,7 +42,6 @@ def read_json(txt_file):
                 key += 1
         except KeyError:
             pass
-    print(save_data)
     return save_data
 
 
