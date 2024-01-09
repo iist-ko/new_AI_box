@@ -6,8 +6,8 @@ from src.tools import read_json
 
 app = Flask(__name__)
 
-pwd = "/home/iist"
-# pwd = os.getcwd()
+# pwd = "/home/iist"
+pwd = os.getcwd()
 
 @app.route('/', methods=['GET'])
 def hellohtml():
@@ -46,7 +46,7 @@ def method():
         data = json_data["data"]
         index = 0
         for i in range(16):
-            if form_dict[f"ip_{i}"] == '':
+            if form_dict[f"ip_{i}"] == '' or form_dict[f"id_{i}"] == '' or form_dict[f"pwd_{i}"] == '':
                 if i < len(data):
                     del data[str(i)]
                 pass

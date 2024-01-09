@@ -7,8 +7,8 @@ from requests.auth import HTTPDigestAuth
 
 from src import darknet
 
-pwd = "/home/iist"
-# pwd = os.getcwd()
+# pwd = "/home/iist"
+pwd = os.getcwd()
 
 
 def image_detection(image_path, network, class_names, class_colors, thresh):
@@ -42,7 +42,6 @@ def read_json(txt_file):
                 key += 1
         except KeyError:
             pass
-    print(save_data)
     return save_data
 
 
@@ -139,3 +138,24 @@ class Alarm:
         self.alarm_count = 0  # 반복 횟수
         self.alarm_status = 0  # detection 횟수
         self.alarm_object = ""
+
+
+def connection_alarm(json_name):
+    ip_data = read_json(json_name)
+    alarm = []
+    ip_data_len = len(ip_data)
+    for i in range(ip_data_len):
+        try:
+            ip_, id_, pwd_, model_ = ip_data[str(i)].values()
+        except KeyError as k:
+            print(f"[{k}] : json 확인")
+            continue
+        except ValueError as v:
+            print(f"[{v}] : json 확인")
+            continue
+        if check_connect(ip_, id_, pwd_):
+            alarm.append(Alarm(ip_, id_, pwd_, model_))
+        else:
+            ip_data_len -= 1
+            print(f"[CON Error] {ip_}")
+    return alarm, ip_data_len
