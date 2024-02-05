@@ -1,12 +1,11 @@
+import datetime
 import os
 import time
+
 import psutil
-import datetime
-import threading
 
 from src import darknet
-from src.tools import read_json, Alarm, image_detection, check_connect, connection_alarm
-from src.Camera import Camera
+from src.tools import image_detection, connection_alarm
 
 pwd = "/home/iist"
 

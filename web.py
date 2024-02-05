@@ -15,20 +15,16 @@ def hellohtml():
         ###################파일불러오기함수####################
         t = 0
         Rdata = read_json('rtsp.json')
-        print(Rdata)
         mylist = [['', '', '', '', '', '', ''] for _ in range(32)]
         while t < len(Rdata):
             try:
                 Data = Rdata[str(t)]
-                print(Data)
                 mylist[t] = [Data["ip"], Data["user_name"], Data["password"],
                              Data["ip_3170"], Data["id_3170"], Data["password_3170"], Data["maker"]]
-                print(t)
             except KeyError:
                 print("Ee")
                 break
             t += 1
-        print(mylist)
         return render_template("form.html", mylist=mylist)
 
 
@@ -51,10 +47,12 @@ def method():
         data = json_data["data"]
         index = 0
         for i in range(32):
-            print(form_dict)
             if form_dict[f"ip_{i}"] == '':
                 if i < len(data):
-                    del data[str(i)]
+                    try:
+                        del data[str(i)]
+                    except KeyError:
+                        pass
                 pass
             if i < len(data):
                 if form_dict[f"ip_{i}"] != "" and form_dict[f"id_{i}"] != "" and form_dict[f"pwd_{i}"] != "":
@@ -132,7 +130,7 @@ def method5():
             f.close()
         with open("/etc/network/interfaces", "w", encoding='utf-8') as f2:
             f2.write(
-                "auto eth0\niface eth0 inet static\naddress  %s\nnetmask 255.255.255.0\nnetwork %s\ngateway %s\nbroadcast %s\ndns-nameservers %s 8.8.8.8" % (
+                "auto eth0\niface eth0 inet static\naddress  %s\nnetmask %s\ngateway %s\nbroadcast %s\ndns-nameservers %s 8.8.8.8" % (
                 Add, Net, Gat, Bro, Add))
             f2.close()
         return render_template("Success.html")
