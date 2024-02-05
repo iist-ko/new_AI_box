@@ -26,9 +26,10 @@ class Camera:
         self.rtsp = f'rtsp://{self.id}:{self.pwd}@{self.ip}/video1s1'
         self.cam = cv2.VideoCapture(self.rtsp)
 
-        self.alarm_off_status = True
+        self.alarm_off_status = False
+        self.frame = None
 
-        self.auth = HTTPDigestAuth(self.id, self.id)
+        self.auth = HTTPDigestAuth(self.id, self.pwd)
         self.default_set()
 
     def default_set(self):
@@ -43,10 +44,10 @@ class Camera:
         try:
             requests.get('http://' + self.ip, auth=self.auth, timeout=0.2)
             self.disconnect_cam()
-            self.default_set()
-            return True
         except:
             return False
+        self.default_set()
+        return True
 
     def disconnect_cam(self):
         self.cam.release()
@@ -67,8 +68,11 @@ class Camera:
     def alarm_off(self):
         if not self.alarm_off_status:
             print(self.ip + ' Alarm Off')
-            status=requests.get(self.alarm_off_str, auth=self.auth, timeout=0.5)
-            code = status.status_code
+            try:
+                status=requests.get(self.alarm_off_str, auth=self.auth, timeout=0.5)
+                code = status.status_code
+            except:
+                code = 404
             self.alarm_off_status = True
             return code
         else:
@@ -76,8 +80,11 @@ class Camera:
 
     def alarm_on(self):
         if self.alarm_off_status:
-            status = requests.get(self.alarm_off_str, auth=self.auth, timeout=0.5)
-            code = status.status_code
+            try:
+                status = requests.get(self.alarm_on_str, auth=self.auth, timeout=0.5)
+                code = status.status_code
+            except:
+                code = 404
             if code == 200:
                 self.alarm_off_status = False
             else:
