@@ -7,8 +7,8 @@ from requests.auth import HTTPDigestAuth
 
 from src import darknet
 
-pwd = "/home/iist"
-# pwd = os.getcwd()
+# pwd = "/home/iist"
+pwd = os.getcwd()
 
 
 def image_detection(image_path, network, class_names, class_colors, thresh):
@@ -34,14 +34,14 @@ def read_json(txt_file):
     read_data = f["data"]
     save_data = dict()
     key = 0
-    for i in range(0, 32):
+    for i in range(0, 64):
         try:
             data = read_data[str(i)]
-            if data["ip"] and data["user_name"] and data["password"] and data["maker"]:
+            if data["ip"] and data["id_"] and data["pw"] and data["maker"]:
                 save_data[str(key)] = data
                 key += 1
         except KeyError:
-            pass
+            continue
     return save_data
 
 
@@ -159,3 +159,24 @@ def connection_alarm(json_name):
             ip_data_len -= 1
             print(f"[CON Error] {ip_}")
     return alarm, ip_data_len
+
+
+class DataStruct:
+    def __init__(self, ip="", id_="", pw="", maker="", v_ip="", v_id="", v_pw=""):
+        """
+        :param ip: ptz ip address
+        :param id_: ptz id
+        :param pw: ptz password
+        :param maker: str() ptz:0, fix:1
+        :param v_ip: video server ip address
+        :param v_id: video server id
+        :param v_pw: video server password
+        """
+        self.ip = ip
+        self.id = id_
+        self.pw = pw
+        self.maker = maker
+        self.v_ip = v_ip
+        self.v_id = v_id
+        self.v_pw = v_pw
+

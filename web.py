@@ -3,32 +3,29 @@ import os
 import json
 
 from src.tools import read_json
+from src.tools import DataStruct
 
 app = Flask(__name__)
 
-pwd = "/home/iist"
-# pwd = os.getcwd()
+# pwd = "/home/iist"
+pwd = os.getcwd()
 
 @app.route('/', methods=['GET'])
 def hellohtml():
     if request.method == 'GET':
-        ###################파일불러오기함수####################
         t = 0
         Rdata = read_json('rtsp.json')
         print(Rdata)
-        mylist = [['', '', '', '', '', '', ''] for _ in range(32)]
+        mylist = [DataStruct() for _ in range(64)]
         while t < len(Rdata):
             try:
                 Data = Rdata[str(t)]
-                print(Data)
-                mylist[t] = [Data["ip"], Data["user_name"], Data["password"],
-                             Data["ip_3170"], Data["id_3170"], Data["password_3170"], Data["maker"]]
-                print(t)
+                mylist[t] = DataStruct(**Data)
             except KeyError:
                 print("Ee")
                 break
             t += 1
-        print(mylist)
+        print(mylist[0].ip)
         return render_template("form.html", mylist=mylist)
 
 
@@ -40,39 +37,42 @@ def method():
         # print(args_dict)
         num = request.args["num"]
         name = request.args.get("name")
-        return "GET으로 전달된 데이터({}, {})".format(num, name)
+        return "GET send data({}, {})".format(num, name)
 
     else:
         form_dict = request.form.to_dict()
         file_path = os.path.join(pwd, "files/resource/rtsp.json")
+
         with open(file_path, "r", encoding="utf-8") as json_file:
             json_data = json.loads(json_file.read())
             json_file.close()
+
         data = json_data["data"]
+        data_len = len(data)
         index = 0
-        for i in range(32):
-            print(form_dict)
-            if form_dict[f"ip_{i}"] == '':
-                if i < len(data):
+        for i in range(64):
+            if form_dict[f"ip_{i}"] == '' or form_dict[f"pw_{i}"] == '':
+                if i < data_len:
                     del data[str(i)]
-                pass
-            if i < len(data):
-                if form_dict[f"ip_{i}"] != "" and form_dict[f"id_{i}"] != "" and form_dict[f"pwd_{i}"] != "":
+                continue
+
+            if i < data_len:
+                if form_dict[f"ip_{i}"] != "" and form_dict[f"id_{i}"] != "" and form_dict[f"pw_{i}"] != "":
                     data_i = dict()
                     data_i["ip"] = form_dict[f"ip_{i}"]
-                    data_i["user_name"] = form_dict[f"id_{i}"]
-                    data_i["password"] = form_dict[f"pwd_{i}"]
+                    data_i["id_"] = form_dict[f"id_{i}"]
+                    data_i["pw"] = form_dict[f"pw_{i}"]
                     data_i["maker"] = form_dict[f"mk_{i}"]
-                    data_i["ip_3170"] = form_dict[f"ip_3170_{i}"]
-                    data_i["id_3170"] = form_dict[f"id_3170_{i}"]
-                    data_i["password_3170"] = form_dict[f"pwd_3170_{i}"]
+                    data_i["v_ip"] = form_dict[f"server_ip_{i}"]
+                    data_i["v_id"] = form_dict[f"server_id_{i}"]
+                    data_i["v_pw"] = form_dict[f"server_pw_{i}"]
                     data[str(index)] = data_i
                     index += 1
             else:
-                data[str(index)] = {"ip": form_dict[f"ip_{i}"], "user_name": form_dict[f"id_{i}"],
-                                    "password": form_dict[f"pwd_{i}"], "ip_3170": form_dict[f"ip_3170_{i}"],
-                                    "id_3170": form_dict[f"id_3170_{i}"],
-                                    "password_3170": form_dict[f"pwd_3170_{i}"], "maker": form_dict[f"mk_{i}"]}
+                data[str(index)] = {"ip": form_dict[f"ip_{i}"], "id_": form_dict[f"id_{i}"],
+                                    "pw": form_dict[f"pw_{i}"], "v_ip": form_dict[f"server_ip_{i}"],
+                                    "v_id": form_dict[f"server_id_{i}"],
+                                    "v_pw": form_dict[f"server_pw_{i}"], "maker": form_dict[f"mk_{i}"]}
                 index += 1
 
         json_data["data"] = data
@@ -99,7 +99,6 @@ def method3():
 
 @app.route('/method4', methods=['GET', 'POST'])
 def method4():
-    ###################파일불러오기함수####################
     t = 0
     f2 = open(os.path.join(pwd, "files/resource/IpChange.txt"), 'r')
 
@@ -120,7 +119,7 @@ def method5():
         # print(args_dict)
         num = request.args["Add"]
         name = request.args.get("Net")
-        return "GET으로 전달된 데이터({}, {})".format(num, name)
+        return "GET send data({}, {})".format(num, name)
 
     else:
         Add = request.form["Add"]
@@ -141,7 +140,7 @@ def method5():
 @app.route('/method6', methods=['GET', 'POST'])
 def method6():
     os.system('echo "root1234" | sudo -kS /home/iist/detection.sh')
-    return "재 실"
+    return "restart"
 
 
 if __name__ == '__main__':

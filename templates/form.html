@@ -9,30 +9,31 @@
 <h2>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;FWS101AI IP주소 입력</h2>
 
 <form action="/method" method="POST">
-    &emsp;&emsp;<label for="fname">모델&nbsp;&nbsp;&emsp;&emsp;&emsp;IP(PTZ or 3204)&emsp;&emsp;&emsp;&emsp;&emsp;ID(PTZ or 3204)&emsp;&emsp;PASSWORD(PTZ or 3204)&emsp;&emsp;&emsp;&emsp;3170 IP&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3170 ID&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3170 PASSWORD</label><br><br>
-        {% for i in range(32) %}
+    &emsp;<label for="fname">모델&nbsp;&nbsp;&emsp;|&emsp;IP(회전 or 고정)&emsp;&emsp;&emsp;&emsp;&emsp;|&emsp;ID(회전 or 고정)&emsp;|&emsp;PASSWORD(회전 or 고정)&emsp;|&emsp;&emsp;비디오서버 IP&emsp;&emsp;|&emsp;&emsp;비디오서버 ID&emsp;&emsp;&emsp;|&emsp;비디오서버 PASSWORD&emsp;|</label><br><br>
+
+        {% for i in range(64) %}
             <select name=mk_{{i}} id="mk1name" >
-                    {% if mylist[i][6] == "0" %}
-                    <option value="0"> PTZ</option>
-                    <option value="1"> FW3204</option>
+                    {% if mylist[i].maker == "0" %}
+                    <option value="0"> 회전형</option>
+                    <option value="1"> 고전형</option>
                     <option value=""> None</option>
-                    {% elif mylist[i][6] == "1" %}
-                    <option value="1"> FW3204</option>
-                    <option value="0"> PTZ</option>
+                    {% elif mylist[i].maker == "1" %}
+                    <option value="1"> 고정형</option>
+                    <option value="0"> 회전형</option>
                     <option value=""> None</option>
                     {% else %}
                     <option value=""> None</option>
-                    <option value="0"> PTZ</option>
-                    <option value="1"> FW3204</option>
+                    <option value="0"> 회전형</option>
+                    <option value="1"> 고정형</option>
                     {% endif %}
               </select>
-            &emsp;<input type="text" style="width:150px;" id="name" name=ip_{{i}} value={{mylist[i][0]}}>
-            &emsp;&emsp;&emsp;&emsp;<input type="text" style="width:100px;" id="l1name" name=id_{{i}} value={{mylist[i][1]}}>
-            &emsp;&emsp;&emsp;&emsp;<input type="password" style="width:100px;" id="P1name" name=pwd_{{i}} value={{mylist[i][2]}}>
-            &emsp;&emsp;&emsp;&emsp;<input type="text" style="width:100px;" id="2name" name=ip_3170_{{i}} value={{mylist[i][3]}}>
-            &emsp;&emsp;&emsp;&emsp;<input type="text" style="width:100px;" id="l2name" name=id_3170_{{i}} value={{mylist[i][4]}}>
-            &emsp;&emsp;&emsp;&emsp;<input type="password" style="width:100px;" id="P2name" name=pwd_3170_{{i}} value={{mylist[i][5]}}>
-            &emsp;&emsp;&emsp;
+            |&emsp;<input type="text" style="width:150px;" id="name" name=ip_{{i}} value={{mylist[i].ip}}>
+            &emsp;&emsp;|&emsp;<input type="text" style="width:100px;" id="l1name" name=id_{{i}} value={{mylist[i].id}}>
+            &emsp;|&emsp;&emsp;&emsp;<input type="password" style="width:100px;" id="P1name" name=pw_{{i}} value={{mylist[i].pw}}>
+            &emsp;&emsp;&emsp;|&emsp;<input type="text" style="width:100px;" id="2name" name=server_ip_{{i}} value={{mylist[i].v_ip}}>
+            &emsp;&emsp;|&emsp;&emsp;<input type="text" style="width:100px;" id="l2name" name=server_id_{{i}} value={{mylist[i].v_id}}>
+            &emsp;&emsp;|&emsp;&emsp;<input type="password" style="width:100px;" id="P2name" name=server_pw_{{i}} value={{mylist[i].v_pw}}>
+            &emsp;&emsp;&emsp;|
                 <br/>
         {% endfor %}
     &emsp;&emsp;&emsp;&emsp;<br>

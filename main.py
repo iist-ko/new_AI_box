@@ -92,7 +92,7 @@ def main():
                     index = 0
                     epoch += 1
                     if epoch == 10:
-                        point, ip_data_len = connection_alarm(json_name)
+                        alarm, ip_data_len = connection_alarm(json_name)
                         epoch = 0
                 point = alarm[index]      # 다음 ip로 이동
             fps = int(1/(time.time() - prev_time))
@@ -110,7 +110,7 @@ def main():
                 index = 0
                 epoch += 1
                 if epoch == 10:
-                    point, ip_data_len = connection_alarm(json_name)
+                    alarm, ip_data_len = connection_alarm(json_name)
                     epoch = 0
             point.disconnect_cam()
             point = alarm[index]
