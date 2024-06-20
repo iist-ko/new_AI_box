@@ -4,7 +4,8 @@ import psutil
 import datetime
 
 from models import darknet
-from utils.tools import image_detection, connection_alarm
+# from models import YOLOv8
+from utils.tools import image_detection, connection_alarm, log_writer
 
 pwd = "/home/iist"
 
@@ -25,6 +26,8 @@ def main():
                  "persist": True,
                  "verbose": True
                  }
+
+    # model = YOLOv8(**configure)
 
     network, class_names, class_colors = \
         darknet.load_network(
@@ -84,12 +87,12 @@ def main():
                         continue
                     now = datetime.datetime.now()
                     nowDatetime = now.strftime('  %m-%d %H:%M:%S  ')
-                    f1 = open(os.path.join(pwd, 'files/resource/log.txt'), 'a')
-                    f1.write(point.ip)
-                    f1.write(nowDatetime)
-                    f1.write(point.alarm_object)
-                    f1.write('\n')
-                    f1.close()
+
+                    data = ""
+                    data += point.ip
+                    data += nowDatetime
+                    data += point.alarm_object
+                    log_writer(os.path.join(pwd, 'files/resource/log.txt'), data)
                 else:
                     point.alarm_off()
                 point.reset()
