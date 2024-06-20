@@ -9,22 +9,30 @@
 <h2>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;FWS101AI IP주소 입력</h2>
 
 <form action="/method" method="POST">
-    &emsp;<label for="fname">모델&nbsp;&nbsp;&emsp;|&emsp;IP(회전 or 고정)&emsp;&emsp;&emsp;&emsp;&emsp;|&emsp;ID(회전 or 고정)&emsp;|&emsp;PASSWORD(회전 or 고정)&emsp;|&emsp;&emsp;비디오서버 IP&emsp;&emsp;|&emsp;&emsp;비디오서버 ID&emsp;&emsp;&emsp;|&emsp;비디오서버 PASSWORD&emsp;|</label><br><br>
+    &emsp;<label for="fname">모델&nbsp;&nbsp;&nbsp;&emsp;|&emsp;IP(회전 or 고정)&emsp;&emsp;&emsp;&emsp;&emsp;|&emsp;ID(회전 or 고정)&emsp;|&emsp;PASSWORD(회전 or 고정)&emsp;|&emsp;&emsp;비디오서버 IP&emsp;&emsp;|&emsp;&emsp;비디오서버 ID&emsp;&emsp;&emsp;|&emsp;비디오서버 PASSWORD&emsp;|</label><br><br>
 
         {% for i in range(64) %}
             <select name=mk_{{i}} id="mk1name" >
                     {% if mylist[i].maker == "0" %}
-                    <option value="0"> 회전형</option>
-                    <option value="1"> 고전형</option>
+                    <option value="0"> 회전형-T</option>
+                    <option value="1"> 고정형-T</option>
+                    <option value="2"> 고정형-S</option>
                     <option value=""> None</option>
                     {% elif mylist[i].maker == "1" %}
-                    <option value="1"> 고정형</option>
-                    <option value="0"> 회전형</option>
+                    <option value="1"> 고정형-T</option>
+                    <option value="0"> 회전형-T</option>
+                    <option value="2"> 고정형-S</option>
+                    <option value=""> None</option>
+                    {% elif mylist[i].maker == "2" %}
+                    <option value="2"> 고정형-S</option>
+                    <option value="1"> 고정형-T</option>
+                    <option value="0"> 회전형-T</option>
                     <option value=""> None</option>
                     {% else %}
                     <option value=""> None</option>
-                    <option value="0"> 회전형</option>
-                    <option value="1"> 고정형</option>
+                    <option value="0"> 회전형-T</option>
+                    <option value="1"> 고정형-T</option>
+                    <option value="2"> 고정형-S</option>
                     {% endif %}
               </select>
             |&emsp;<input type="text" style="width:150px;" id="name" name=ip_{{i}} value={{mylist[i].ip}}>
