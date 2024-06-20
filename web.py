@@ -8,7 +8,7 @@ from utils.tools import DataStruct
 app = Flask(__name__)
 
 # pwd = "/home/iist"
-pwd = "/usr/src/ultralytics"
+pwd = "/usr/src/ultralytics/new_AI_box"
 # pwd = os.getcwd()
 
 @app.route('/', methods=['GET'])

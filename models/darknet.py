@@ -28,7 +28,7 @@ import platform
 import os
 
 # pwd = "/home/iist"
-pwd = "/usr/src/ultralytics"
+pwd = "/usr/src/ultralytics/new_AI_box"
 # pwd = os.getcwd()
 
 

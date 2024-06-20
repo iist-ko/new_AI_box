@@ -8,7 +8,7 @@ from models import darknet
 from utils.tools import image_detection, connection_alarm, log_writer
 
 # pwd = "/home/iist"
-pwd = "/usr/src/ultralytics"
+pwd = "/usr/src/ultralytics/new_AI_box"
 # pwd = os.getcwd()
 
 
