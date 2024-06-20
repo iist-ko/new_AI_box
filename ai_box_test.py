@@ -37,7 +37,7 @@ def main():
         if not ret:
             print("video error")
             break
-        image, detections = image_detection(frame, network, class_names, class_colors, 0.5)
+        image, detections = image_detection(frame, network, class_names, class_colors, 0.4, 0.3)
 
         fire = 0
         smoke = 0
