@@ -166,11 +166,12 @@ def connection_alarm(json_name):
         except ValueError as v:
             print(f"[{v}] : json 확인")
             continue
+
         if check_connect(data["ip"], data["id_"], data["pw"]):
             alarm.append(Alarm(**data))
         else:
             ip_data_len -= 1
-            print(f"[CON Error] {ip_}")
+            print(f"[CON Error] {data['ip']}")
     return alarm, ip_data_len
 
 
@@ -193,3 +194,13 @@ class DataStruct:
         self.v_id = v_id
         self.v_pw = v_pw
 
+def check_file(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+def log_writer(path, txt):
+    check_file(path)
+
+    with open(path, 'a') as f:
+        f.write(txt + "\n")
+        f.close()
