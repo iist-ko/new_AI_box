@@ -8,7 +8,8 @@ from utils.tools import DataStruct
 app = Flask(__name__)
 
 # pwd = "/home/iist"
-pwd = os.getcwd()
+pwd = "/usr/src/ultralytics"
+# pwd = os.getcwd()
 
 @app.route('/', methods=['GET'])
 def hellohtml():

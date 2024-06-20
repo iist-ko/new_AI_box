@@ -7,7 +7,9 @@ from models import darknet
 # from models import YOLOv8
 from utils.tools import image_detection, connection_alarm, log_writer
 
-pwd = "/home/iist"
+# pwd = "/home/iist"
+pwd = "/usr/src/ultralytics"
+# pwd = os.getcwd()
 
 
 def main():

@@ -28,7 +28,8 @@ import platform
 import os
 
 # pwd = "/home/iist"
-pwd = os.getcwd()
+pwd = "/usr/src/ultralytics"
+# pwd = os.getcwd()
 
 
 class BOX(Structure):
