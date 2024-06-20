@@ -2,8 +2,8 @@ from flask import Flask, render_template, request
 import os
 import json
 
-from src.tools import read_json
-from src.tools import DataStruct
+from utils.tools import read_json
+from utils.tools import DataStruct
 
 app = Flask(__name__)
 

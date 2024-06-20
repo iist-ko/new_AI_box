@@ -2,11 +2,9 @@ import os
 import time
 import psutil
 import datetime
-import threading
 
-from src import darknet
-from src.tools import read_json, Alarm, image_detection, check_connect, connection_alarm
-from src.Camera import Camera
+from models import darknet
+from utils.tools import image_detection, connection_alarm
 
 pwd = "/home/iist"
 
@@ -20,6 +18,14 @@ def main():
     # ---- ip setting end ---- #
 
     # ---- model load ---- #
+    configure = {"name": "AI-Box",
+                 "weight_path": os.path.join(pwd, 'files/weights/yolov8n.engine'),
+                 "config_thr": .6,
+                 "iou_thr": .5,
+                 "persist": True,
+                 "verbose": True
+                 }
+
     network, class_names, class_colors = \
         darknet.load_network(
             os.path.join(pwd, "files/cfg/yolov4-tiny-custom.cfg"),
