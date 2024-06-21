@@ -86,7 +86,7 @@ def method():
 
 @app.route('/method2', methods=['GET', 'POST'])
 def method2():
-    os.system('reboot')
+    os.system('echo "reboot" > /hostpipe')
     return 'Reboot'
 
 
@@ -127,13 +127,12 @@ def method5():
         Net = request.form["Net"]
         Gat = request.form["Gat"]
         Bro = request.form["Bro"]
+        txt = f"auto eth0\niface eth0 inet static\naddress  {Add}\nnetmask {Net}\ngateway {Gat}\nbroadcast {Bro}\ndns-nameservers {Add} 8.8.8.8"
         with open(os.path.join(pwd, "files/resource/IpChange.txt"), "w", encoding='utf-8') as f:
             f.write("%s\n%s\n%s\n%s" % (Add, Net, Gat, Bro))
             f.close()
-        with open("/etc/network/interfaces", "w", encoding='utf-8') as f2:
-            f2.write(
-                "auto eth0\niface eth0 inet static\naddress  %s\nnetmask %s\ngateway %s\nbroadcast %s\ndns-nameservers %s 8.8.8.8" % (
-                Add, Net, Gat, Bro, Add))
+        with open("/interfaces", "w", encoding='utf-8') as f2:
+            f2.write(txt)
             f2.close()
         return render_template("Success.html")
 
