@@ -74,7 +74,7 @@ class Alarm:
         self.alarm_object = ""
         self.alarm_on_str = f'http://{self.ip}/httpapi/WriteParam?action=writeparam&ETC_FLAMEDETECT_AlarmOutEnable=1'
         self.alarm_off_str = f'http://{self.ip}/httpapi/WriteParam?action=writeparam&ETC_FLAMEDETECT_AlarmOutEnable=0'
-        self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}/video1s1'
+        self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}:554/video1s1'
         self.error_count = 0
         self.default_set()
 
@@ -87,17 +87,17 @@ class Alarm:
 
     def maker_check(self):
         if self.maker == "0":
-            self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}/video1s1'
+            self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}:554/video1s1'
             self.alarm_on_str = f'http://{self.v_ip}/cgi-bin/admin/fwvamispecific.cgi?AlarmDisable=0&FwCgiVer=0x0001'
             self.alarm_off_str = f'http://{self.v_ip}/cgi-bin/admin/fwvamispecific.cgi?AlarmDisable=1&FwCgiVer=0x0001'
         elif self.maker == "2":
-            self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}/cam0_1'
+            self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}:554/cam0_1'
             self.alarm_on_str = f'http://{self.ip}/cgi-bin/admin/fwvamispecific.cgi?AlarmDisable=0&FwCgiVer=0x0001'
             self.alarm_off_str = f'http://{self.ip}/cgi-bin/admin/fwvamispecific.cgi?AlarmDisable=1&FwCgiVer=0x0001'
         else:
             self.alarm_on_str = f'http://{self.ip}/httpapi/WriteParam?action=writeparam&ETC_FLAMEDETECT_AlarmOutEnable=1'
             self.alarm_off_str = f'http://{self.ip}/httpapi/WriteParam?action=writeparam&ETC_FLAMEDETECT_AlarmOutEnable=0'
-            self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}/video1s1'
+            self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}:554/video1s1'
 
     def reconnect_cam(self):
         try:
