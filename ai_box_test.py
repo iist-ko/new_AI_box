@@ -1,12 +1,9 @@
 import os
 import cv2
 import time
-import psutil
-import datetime
-import threading
 
-from src import darknet
-from src.tools import read_json, Alarm, image_detection, check_connect
+from models import darknet
+from utils.tools import image_detection
 
 pwd = os.getcwd()
 
@@ -40,7 +37,7 @@ def main():
         if not ret:
             print("video error")
             break
-        image, detections = image_detection(frame, network, class_names, class_colors, 0.5)
+        image, detections = image_detection(frame, network, class_names, class_colors, 0.4, 0.3)
 
         fire = 0
         smoke = 0

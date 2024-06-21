@@ -5,9 +5,9 @@ import requests
 
 from requests.auth import HTTPDigestAuth
 
-from src import darknet
+from models import darknet
 
-pwd = "/home/iist"
+pwd = "/usr/src/ultralytics/new_AI_box"
 # pwd = os.getcwd()
 
 
@@ -34,58 +34,70 @@ def read_json(txt_file):
     read_data = f["data"]
     save_data = dict()
     key = 0
-    for i in range(0, 16):
+    for i in range(0, 64):
         try:
             data = read_data[str(i)]
-            if data["ip"] and data["user_name"] and data["password"] and data["maker"]:
+            if data["ip"] and data["id_"] and data["pw"] and data["maker"]:
                 save_data[str(key)] = data
                 key += 1
         except KeyError:
-            pass
-    print(save_data)
+            continue
     return save_data
 
 
-def check_connect(ip_, id_, pwd_):
+def check_connect(ip, id_, pw):
     try:
-        requests.get(f"http://{ip_}/", auth=HTTPDigestAuth(id_, pwd_), timeout=0.5)
+        requests.get(f"http://{ip}/", auth=HTTPDigestAuth(id_, pw), timeout=0.5)
         return True
     except:
         return False
 
 
 class Alarm:
-    def __init__(self, ip_, id_, pwd_, model):
-        self.ip = ip_
+    def __init__(self, ip="", id_="", pw="", maker="", v_ip="", v_id="", v_pw=""):
+        self.ip = ip
         self.id = id_
-        self.pwd = pwd_
+        self.pw = pw
+        self.maker = maker
+        self.auth = HTTPDigestAuth(id_, pw)
+
+        self.v_ip = v_ip
+        self.v_id = v_id
+        self.v_pw = v_pw
+        self.v_auth = HTTPDigestAuth(v_id, v_pw)
+
         self.alarm_count = 0  # 반복 횟수
         self.alarm_status = 0  # detection 횟수
         self.cam = None
         self.frame = None
-        self.auth = None
-        self.model = model
         self.alarm_off_status = True
         self.alarm_object = ""
         self.alarm_on_str = f'http://{self.ip}/httpapi/WriteParam?action=writeparam&ETC_FLAMEDETECT_AlarmOutEnable=1'
         self.alarm_off_str = f'http://{self.ip}/httpapi/WriteParam?action=writeparam&ETC_FLAMEDETECT_AlarmOutEnable=0'
-        self.rtsp = f'rtsp://{self.id}:{self.pwd}@{self.ip}/video1s1'
+        self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}:554/video1s1'
         self.error_count = 0
         self.default_set()
 
     def default_set(self):
         print("[INFO] ====== Default_set ======")
-        self.auth = HTTPDigestAuth(self.id, self.pwd)
-        self.model_check()
+        self.maker_check()
         print("Alarm Off")
         self.cam = cv2.VideoCapture(self.rtsp)
         requests.get(self.alarm_off_str, auth=self.auth, timeout=0.5)
 
-    def model_check(self):
-        if self.model != "1":
-            self.cam = self.rtsp = f"rtsp://{self.id}:{self.pwd}@{self.ip}/cam0_0"
+    def maker_check(self):
+        if self.maker == "0":
+            self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}:554/video1s1'
+            self.alarm_on_str = f'http://{self.v_ip}/cgi-bin/admin/fwvamispecific.cgi?AlarmDisable=0&FwCgiVer=0x0001'
+            self.alarm_off_str = f'http://{self.v_ip}/cgi-bin/admin/fwvamispecific.cgi?AlarmDisable=1&FwCgiVer=0x0001'
+        elif self.maker == "2":
+            self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}:554/cam0_1'
             self.alarm_on_str = f'http://{self.ip}/cgi-bin/admin/fwvamispecific.cgi?AlarmDisable=0&FwCgiVer=0x0001'
             self.alarm_off_str = f'http://{self.ip}/cgi-bin/admin/fwvamispecific.cgi?AlarmDisable=1&FwCgiVer=0x0001'
+        else:
+            self.alarm_on_str = f'http://{self.ip}/httpapi/WriteParam?action=writeparam&ETC_FLAMEDETECT_AlarmOutEnable=1'
+            self.alarm_off_str = f'http://{self.ip}/httpapi/WriteParam?action=writeparam&ETC_FLAMEDETECT_AlarmOutEnable=0'
+            self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}:554/video1s1'
 
     def reconnect_cam(self):
         try:
@@ -107,7 +119,7 @@ class Alarm:
                 f = open(os.path.join(pwd, "files/resource/log.txt"), 'a')
                 f.write("reboot")
                 f.close()
-                os.system('echo "root1234" | sudo -kS /home/iist/detection.sh')
+                os.system(f'{pwd}/detection.sh')
         return ret
 
     def disconnect_cam(self):
@@ -139,3 +151,56 @@ class Alarm:
         self.alarm_count = 0  # 반복 횟수
         self.alarm_status = 0  # detection 횟수
         self.alarm_object = ""
+
+
+def connection_alarm(json_name):
+    ip_data = read_json(json_name)
+    alarm = []
+    ip_data_len = len(ip_data)
+    for i in range(ip_data_len):
+        try:
+            data = ip_data[str(i)]
+        except KeyError as k:
+            print(f"[{k}] : json 확인")
+            continue
+        except ValueError as v:
+            print(f"[{v}] : json 확인")
+            continue
+
+        if check_connect(data["ip"], data["id_"], data["pw"]):
+            alarm.append(Alarm(**data))
+        else:
+            ip_data_len -= 1
+            print(f"[CON Error] {data['ip']}")
+    return alarm, ip_data_len
+
+
+class DataStruct:
+    def __init__(self, ip="", id_="", pw="", maker="", v_ip="", v_id="", v_pw=""):
+        """
+        :param ip: ptz ip address
+        :param id_: ptz id
+        :param pw: ptz password
+        :param maker: str() ptz:0, fix-t:1, fix-s:2
+        :param v_ip: video server ip address
+        :param v_id: video server id
+        :param v_pw: video server password
+        """
+        self.ip = ip
+        self.id = id_
+        self.pw = pw
+        self.maker = maker
+        self.v_ip = v_ip
+        self.v_id = v_id
+        self.v_pw = v_pw
+
+def check_file(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+def log_writer(path, txt):
+    check_file(path)
+
+    with open(path, 'a') as f:
+        f.write(txt + "\n")
+        f.close()

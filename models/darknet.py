@@ -28,7 +28,8 @@ import platform
 import os
 
 # pwd = "/home/iist"
-pwd = os.getcwd()
+pwd = "/usr/src/ultralytics/new_AI_box"
+# pwd = os.getcwd()
 
 
 class BOX(Structure):
@@ -225,7 +226,7 @@ if os.name == "nt":
             lib = CDLL(winGPUdll, RTLD_GLOBAL)
             print("Environment variables indicated a CPU run, but we didn't find {}. Trying a GPU run anyway.".format(winNoGPUdll))
 else:
-    lib = CDLL(os.path.join(os.environ.get('DARKNET_PATH', './'),
+    lib = CDLL(os.path.join(os.environ.get('DARKNET_PATH', '../utils/'),
                             os.path.join(pwd, f"files/lib/{platform.processor()}/libdarknet.so"))
                , RTLD_GLOBAL)
 lib.network_width.argtypes = [c_void_p]

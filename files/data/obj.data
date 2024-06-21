@@ -1,5 +1,5 @@
 classes= 5
 train  = /home/iist/files/data/train.txt
 valid  = /home/iist/files/data/train.txt
-names = /home/iist/PycharmProjects/new_AI/files/data/obj.names
+names = /usr/src/ultralytics/new_AI_box/files/data/obj.names
 backup = /home/iist/files/backup/
