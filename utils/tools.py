@@ -7,7 +7,7 @@ from requests.auth import HTTPDigestAuth
 
 from models import darknet
 
-pwd = "/home/iist"
+pwd = "/usr/src/ultralytics/new_AI_box"
 # pwd = os.getcwd()
 
 
