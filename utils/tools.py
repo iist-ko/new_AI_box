@@ -119,7 +119,7 @@ class Alarm:
                 f = open(os.path.join(pwd, "files/resource/log.txt"), 'a')
                 f.write("reboot")
                 f.close()
-                os.system('echo "root1234" | sudo -kS /home/iist/detection.sh')
+                os.system(f'{pwd}/detection.sh')
         return ret
 
     def disconnect_cam(self):

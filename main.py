@@ -113,7 +113,7 @@ def main():
             memory_usage_percent = memory_usage_dict['percent']
             if int(memory_usage_percent) >= 92:
                 print("pkill!!")
-                os.system('echo "root1234" | sudo -kS sh /home/iist/detection.sh')
+                os.system(f'sh {pwd}/detection.sh')
         except:
             point.reset()
             index += 1
