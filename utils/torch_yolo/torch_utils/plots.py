@@ -23,7 +23,7 @@ from utils.torch_yolo.torch_utils.metrics import fitness
 
 # Settings
 matplotlib.rc('font', **{'size': 11})
-matplotlib.use('TkAgg')  # for writing to files only
+matplotlib.use('Agg')  # for writing to files only
 
 
 def color_list():
