@@ -86,7 +86,7 @@ def method():
 
 @app.route('/method2', methods=['GET', 'POST'])
 def method2():
-    os.system('echo "echo \'root\' sudo -kS reboot" > /hostpipe')
+    os.system('echo "echo \'root1234\' | sudo -kS reboot" > /hostpipe')
     return 'Reboot'
 
 
