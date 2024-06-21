@@ -103,14 +103,9 @@ def method4():
     t = 0
     f2 = open(os.path.join(pwd, "files/resource/IpChange.txt"), 'r')
 
-    R2data = f2.read().split('\n')
+    CH = f2.read().split('\n')
     # print(Rdata)
-    CH = ['', '', '', '']
-    CH[0] = R2data[0]
-    CH[1] = R2data[1]
-    CH[2] = R2data[2]
-    CH[3] = R2data[3]
-    return render_template("IpChange.html", Ch0=CH[0], Ch1=CH[1], Ch2=CH[2], Ch3=CH[3])
+    return render_template("IpChange.html", CH=CH)
 
 
 @app.route('/method5', methods=['GET', 'POST'])
@@ -127,10 +122,13 @@ def method5():
         Net = request.form["Net"]
         Gat = request.form["Gat"]
         Bro = request.form["Bro"]
-        txt = f"auto eth0\niface eth0 inet static\naddress  {Add}\nnetmask {Net}\ngateway {Gat}\nbroadcast {Bro}\ndns-nameservers {Add} 8.8.8.8"
+        txt = "auto lo\niface lo inet loopback\n\n"
+        txt += (f"auto eth0\niface eth0 inet static\naddress {Add}\nnetmask {Net}\n"
+               f"gateway {Gat}\nbroadcast {Bro}\ndns-nameservers 8.8.8.8")
         with open(os.path.join(pwd, "files/resource/IpChange.txt"), "w", encoding='utf-8') as f:
             f.write("%s\n%s\n%s\n%s" % (Add, Net, Gat, Bro))
             f.close()
+        # with open("/etc/network/interfaces", "w", encoding='utf-8') as f2:
         with open("/interfaces", "w", encoding='utf-8') as f2:
             f2.write(txt)
             f2.close()
