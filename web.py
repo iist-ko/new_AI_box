@@ -86,7 +86,7 @@ def method():
 
 @app.route('/method2', methods=['GET', 'POST'])
 def method2():
-    os.system('echo "root1234" | sudo -kS reboot')
+    os.system('reboot')
     return 'Reboot'
 
 
@@ -140,7 +140,7 @@ def method5():
 
 @app.route('/method6', methods=['GET', 'POST'])
 def method6():
-    os.system('echo "root1234" | sudo -kS /home/iist/detection.sh')
+    os.system(f'{pwd}/detection.sh')
     return "restart"
 
 
