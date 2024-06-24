@@ -14,21 +14,21 @@ pwd = "/usr/src/ultralytics/new_AI_box"
 
 def main():
     index = 0
-
     # ---- ip setting ---- #
     json_name = 'rtsp.json'
     alarm, ip_data_len = connection_alarm(json_name)
     # ---- ip setting end ---- #
 
     # ---- model load ---- #
-    configure = {"name": "AI-Box",
-                 "weight_path": os.path.join(pwd, 'files/weights/yolov8n.engine'),
-                 "config_thr": .6,
-                 "iou_thr": .5,
-                 "persist": True,
-                 "verbose": True
-                 }
-
+    # configure = {"name": "AI-Box",
+    #              "weight_path": os.path.join(pwd, 'files/weights/yolov8n.engine'),
+    #              "config_thr": .6,
+    #              "iou_thr": .5,
+    #              "persist": True,
+    #              "verbose": True
+    #              }
+    # fire_label = 1
+    # smoke_label = 2
     # model = YOLOv8(**configure)
 
     network, class_names, class_colors = \
@@ -61,6 +61,9 @@ def main():
         try:
             image, detections = image_detection(point.frame, network, class_names, class_colors, 0.50)
 
+            # detected = model.predict(point.frame)
+            # label = detected.boxes.cls.cpu().numpy()
+
             fire = 0
             smoke = 0
 
@@ -71,6 +74,13 @@ def main():
                 if label == 'Smoke':
                     smoke += 1
                     point.alarm_status += 1
+
+            # if fire_label in label:
+            #     fire_label += 1
+            #     point.alarm_status += 1
+            # if smoke_label in label:
+            #     smoke_label += 1
+            #     point.alarm_status += 1
 
             if fire > smoke:
                 point.alarm_object = 'Fire'

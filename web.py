@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request
-import os
 import json
+import os
 
-from utils.tools import read_json
+from flask import Flask, render_template, request
+
 from utils.tools import DataStruct
+from utils.tools import read_json
 
 app = Flask(__name__)
 
@@ -100,11 +101,8 @@ def method3():
 
 @app.route('/method4', methods=['GET', 'POST'])
 def method4():
-    t = 0
     f2 = open(os.path.join(pwd, "files/resource/IpChange.txt"), 'r')
-
     CH = f2.read().split('\n')
-    # print(Rdata)
     return render_template("IpChange.html", CH=CH)
 
 
