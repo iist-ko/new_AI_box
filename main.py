@@ -21,13 +21,13 @@ def main():
     # ---- ip setting end ---- #
 
     # ---- model load ---- #
-    configure = {"name": "AI-Box",
-                 "weight_path": os.path.join(pwd, 'files/weights/yolov8n.engine'),
-                 "config_thr": .6,
-                 "iou_thr": .5,
-                 "persist": True,
-                 "verbose": True
-                 }
+    # configure = {"name": "AI-Box",
+    #              "weight_path": os.path.join(pwd, 'files/weights/yolov8n.engine'),
+    #              "config_thr": .6,
+    #              "iou_thr": .5,
+    #              "persist": True,
+    #              "verbose": True
+    #              }
 
     # model = YOLOv8(**configure)
 
@@ -59,7 +59,7 @@ def main():
                 index = 0
             point = alarm[index]
         try:
-            image, detections = image_detection(point.frame, network, class_names, class_colors, 0.50)
+            image, detections = image_detection(point.frame, network, class_names, class_colors, 0.4)
 
             fire = 0
             smoke = 0

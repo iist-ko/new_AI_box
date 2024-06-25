@@ -29,6 +29,20 @@ def image_detection(image_path, network, class_names, class_colors, thresh):
     return cv2.cvtColor(image, cv2.COLOR_BGR2RGB), detections
 
 
+def gstreamer_pipeline(
+    rtsp_url,
+    width=640,
+    height=480,
+    framerate=30,
+    display=False):
+    return (
+        f'rtspsrc location={rtsp_url} latency=0 ! '
+        f'rtph264depay ! h264parse ! omxh264dec ! nvvidconv ! '
+        f'video/x-raw, width=(int){width}, height=(int){height}, framerate=(fraction){framerate}/1 ! '
+        f'videoconvert ! appsink'
+    )
+
+
 def read_json(txt_file):
     f = json.loads(open(os.path.join(pwd, f"files/resource/{txt_file}"), 'r').read())
     read_data = f["data"]
@@ -82,7 +96,7 @@ class Alarm:
         print("[INFO] ====== Default_set ======")
         self.maker_check()
         print("Alarm Off")
-        self.cam = cv2.VideoCapture(self.rtsp)
+        self.cam = cv2.VideoCapture(gstreamer_pipeline(self.rtsp), cv2.CAP_CSTREAMER)
         requests.get(self.alarm_off_str, auth=self.auth, timeout=0.5)
 
     def maker_check(self):
