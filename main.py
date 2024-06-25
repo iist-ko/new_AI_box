@@ -3,6 +3,7 @@ import time
 import psutil
 import datetime
 
+from copy import deepcopy
 # from models import darknet
 from models import YOLOv8
 from utils.tools import connection_alarm, log_writer
@@ -60,8 +61,9 @@ def main():
             point = alarm[index]
         try:
             # image, detections = image_detection(point.frame, network, class_names, class_colors, 0.50)
-
-            detected = model.predict(point.frame)
+            frame = deepcopy(point.frame)
+            print(id(frame), id(point.frame))
+            detected = model.predict(frame)
 
             label = detected.boxes.cls.cpu().numpy()
 
