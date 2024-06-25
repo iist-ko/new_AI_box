@@ -2,25 +2,28 @@ import os
 import cv2
 import time
 
-from models import darknet
-from utils.tools import image_detection
+from models import YOLOv8
+# from utils.tools import image_detection
 
 pwd = os.getcwd()
 
 
 def main():
-
+    configure = {"name": "AI-Box",
+                 "weight_path": os.path.join(pwd, 'files/weights/v8n.engine'),
+                 "conf_thr": .6,
+                 "iou_thr": .5,
+                 "persist": True,
+                 "verbose": False
+                 }
     # ---- ip setting end ---- #
     # ---- model load ---- #
-    network, class_names, class_colors = \
-        darknet.load_network(
-            os.path.join(pwd, "files/cfg/yolov4-tiny-custom.cfg"),
-            os.path.join(pwd, "files/data/obj.data"),
-            os.path.join(pwd, "files/weights/yolov4-tiny-custom_8000.weights"),
-            batch_size=1
-        )
+    fire_label = 1
+    smoke_label = 2
+    model = YOLOv8(**configure)
+
     # ---- model load end ---- #
-    cap = cv2.VideoCapture(os.path.join(pwd, 'test_av/Video_2023-04-17_113227.wmv'))
+    cap = cv2.VideoCapture("rtsp://root:root@192.168.0.250:554/cam0_1")
     alarm_status = 0
     alarm_count = 0
     alarm_object = 0
@@ -37,41 +40,24 @@ def main():
         if not ret:
             print("video error")
             break
-        image, detections = image_detection(frame, network, class_names, class_colors, 0.4, 0.3)
-
+        detections = model.predict(frame)
+        label = detections.boxes.cls.cpu().numpy()
         fire = 0
         smoke = 0
 
-        for label, confidence, bbox in detections:
-            if label == 'fire':
-                fire += 1
-                alarm_status += 1
-            if label == 'Smoke':
-                smoke += 1
-                alarm_status += 1
-            print(label)
+        if fire_label in label:
+            fire_label += 1
+        if smoke_label in label:
+            smoke_label += 1
 
-            if fire > smoke:
-                alarm_object = 'Fire'
-            elif fire < smoke:
-                alarm_object = 'Smoke'
-            elif fire == smoke:
-                alarm_object = 'Fire & Smoke'
+        print(label)
 
         alarm_count += 1
-        print(detections)
-        cv2.putText(image, f"Detect: Object {alarm_object}", (250, 40),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, [255, 255, 255], 2, cv2.LINE_AA)
-        cv2.imshow('frame', image)
-        if detections:
-            time.sleep(0.5)
-        if cv2.waitKey(20) == 27:
+        if cv2.waitKey(30) == 27:
             break
 
     if cap.isOpened():
         cap.release()
-
-    cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
