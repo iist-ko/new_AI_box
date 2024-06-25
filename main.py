@@ -25,7 +25,7 @@ def main():
                  "conf_thr": .6,
                  "iou_thr": .5,
                  "persist": True,
-                 "verbose": True
+                 "verbose": False
                  }
     fire_label = 1
     smoke_label = 2
@@ -52,7 +52,6 @@ def main():
         if point.alarm_count == 0:
             print(f"[INFO] : Searching {point.ip} . . .")
         ret = point.read_frame()
-        print(point.rtsp)
         if not ret:
             point.reset()
             index += 1
@@ -63,6 +62,7 @@ def main():
             # image, detections = image_detection(point.frame, network, class_names, class_colors, 0.50)
 
             detected = model.predict(point.frame)
+
             label = detected.boxes.cls.cpu().numpy()
 
             fire = 0

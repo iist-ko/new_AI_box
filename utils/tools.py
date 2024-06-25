@@ -119,12 +119,15 @@ class Alarm:
         ret, self.frame = self.cam.read()
         if not ret:
             print(f"frame read error {self.error_count}")
-            con_ = self.reconnect_cam()
-            self.error_count += 1
+            con_ = self.conn_check()
+            if con_:
+                self.error_count += 1
             if self.error_count == 10:
                 f = open(os.path.join(pwd, "files/resource/log.txt"), 'a')
                 f.write(f"{self.ip} reconnect_cam")
                 f.close()
+                self.reconnect_cam()
+
         return ret
 
     def disconnect_cam(self):
