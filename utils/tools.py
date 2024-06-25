@@ -105,7 +105,6 @@ class Alarm:
             if response.status_code == 200:
                 self.cam.release()
                 self.cam = cv2.VideoCapture(self.rtsp)
-            print(response.status_code)
             self.disconnect_cam()
             self.default_set()
             return True
@@ -114,6 +113,7 @@ class Alarm:
 
     def read_frame(self):
         ret, self.frame = self.cam.read()
+        print(self.frame)
         if not ret:
             print(f"frame read error {self.error_count}")
             con_ = self.reconnect_cam()
