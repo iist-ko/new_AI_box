@@ -91,7 +91,7 @@ class Alarm:
             self.alarm_on_str = f'http://{self.v_ip}/cgi-bin/admin/fwvamispecific.cgi?AlarmDisable=0&FwCgiVer=0x0001'
             self.alarm_off_str = f'http://{self.v_ip}/cgi-bin/admin/fwvamispecific.cgi?AlarmDisable=1&FwCgiVer=0x0001'
         elif self.maker == "2":
-            self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}:554/cam0_1'
+            self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}:554/cam0_0'
             self.alarm_on_str = f'http://{self.ip}/cgi-bin/admin/fwvamispecific.cgi?AlarmDisable=0&FwCgiVer=0x0001'
             self.alarm_off_str = f'http://{self.ip}/cgi-bin/admin/fwvamispecific.cgi?AlarmDisable=1&FwCgiVer=0x0001'
         else:
@@ -100,20 +100,23 @@ class Alarm:
             self.rtsp = f'rtsp://{self.id}:{self.pw}@{self.ip}:554/video1s1'
 
     def reconnect_cam(self):
+        self.disconnect_cam()
+        self.cam = cv2.VideoCapture(self.rtsp)
+
+    def conn_check(self):
         try:
             response = requests.get('http://'+self.ip, auth=self.auth, timeout=0.2)
             if response.status_code == 200:
-                self.cam.release()
-                self.cam = cv2.VideoCapture(self.rtsp)
-            self.disconnect_cam()
-            self.default_set()
+                return True
+            else:
+                self.disconnect_cam()
+                self.default_set()
             return True
         except:
             return False
 
     def read_frame(self):
         ret, self.frame = self.cam.read()
-        print(self.frame)
         if not ret:
             print(f"frame read error {self.error_count}")
             con_ = self.reconnect_cam()
