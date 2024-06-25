@@ -52,6 +52,7 @@ def main():
         if point.alarm_count == 0:
             print(f"[INFO] : Searching {point.ip} . . .")
         ret = point.read_frame()
+        print(point.rtsp)
         if not ret:
             point.reset()
             index += 1
