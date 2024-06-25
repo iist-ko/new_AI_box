@@ -101,7 +101,10 @@ class Alarm:
 
     def reconnect_cam(self):
         try:
-            requests.get('http://'+self.ip, auth=self.auth, timeout=0.2)
+            response = requests.get('http://'+self.ip, auth=self.auth, timeout=0.2)
+            if response.status_code == 200:
+                self.cam.release()
+                self.cam = cv2.VideoCapture(self.rtsp)
             self.disconnect_cam()
             self.default_set()
             return True
@@ -117,9 +120,8 @@ class Alarm:
                 self.error_count += 1
             if self.error_count == 10:
                 f = open(os.path.join(pwd, "files/resource/log.txt"), 'a')
-                f.write("reboot")
+                f.write(f"{self.ip} reconnect_cam")
                 f.close()
-                os.system(f'{pwd}/detection.sh')
         return ret
 
     def disconnect_cam(self):
