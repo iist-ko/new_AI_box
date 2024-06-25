@@ -96,7 +96,7 @@ class Alarm:
         print("[INFO] ====== Default_set ======")
         self.maker_check()
         print("Alarm Off")
-        self.cam = cv2.VideoCapture(gstreamer_pipeline(self.rtsp), cv2.CAP_CSTREAMER)
+        self.cam = cv2.VideoCapture(gstreamer_pipeline(self.rtsp), cv2.CAP_GSTREAMER)
         requests.get(self.alarm_off_str, auth=self.auth, timeout=0.5)
 
     def maker_check(self):
