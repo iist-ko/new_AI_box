@@ -17,6 +17,6 @@ class YOLOv8:
 
     def predict(self, frame) -> Results:
         # verbose = log output,
-        return self.model.track(frame, persist=self.persist, conf=self.conf_thr, iou=self.iou_thr,
-                                verbose=self.verbose, tracker=self.tracker)[0]
+        return self.model.predict(frame, persist=self.persist, conf=self.conf_thr, iou=self.iou_thr,
+                                  verbose=self.verbose)[0]
 

@@ -22,7 +22,7 @@ def main():
     # ---- model load ---- #
     configure = {"name": "AI-Box",
                  "weight_path": os.path.join(pwd, 'files/weights/v8n.engine'),
-                 "config_thr": .6,
+                 "conf_thr": .6,
                  "iou_thr": .5,
                  "persist": True,
                  "verbose": True
