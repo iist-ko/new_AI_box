@@ -114,7 +114,7 @@ class Alarm:
     def read_frame(self):
         ret, self.frame = self.cam.read()
         if not ret:
-            print("frame read error")
+            print(f"frame read error {self.error_count}")
             con_ = self.reconnect_cam()
             if not con_:
                 self.error_count += 1
