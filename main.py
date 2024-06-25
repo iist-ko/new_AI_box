@@ -5,7 +5,7 @@ import datetime
 
 # from models import darknet
 from models import YOLOv8
-from utils.tools import image_detection, connection_alarm, log_writer
+from utils.tools import connection_alarm, log_writer
 
 # pwd = "/home/iist"
 pwd = "/usr/src/ultralytics/new_AI_box"
