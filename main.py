@@ -3,8 +3,8 @@ import time
 import psutil
 import datetime
 
-from models import darknet
-# from models import YOLOv8
+# from models import darknet
+from models import YOLOv8
 from utils.tools import image_detection, connection_alarm, log_writer
 
 # pwd = "/home/iist"
@@ -20,24 +20,24 @@ def main():
     # ---- ip setting end ---- #
 
     # ---- model load ---- #
-    # configure = {"name": "AI-Box",
-    #              "weight_path": os.path.join(pwd, 'files/weights/yolov8n.engine'),
-    #              "config_thr": .6,
-    #              "iou_thr": .5,
-    #              "persist": True,
-    #              "verbose": True
-    #              }
-    # fire_label = 1
-    # smoke_label = 2
-    # model = YOLOv8(**configure)
+    configure = {"name": "AI-Box",
+                 "weight_path": os.path.join(pwd, 'files/weights/v8n.engine'),
+                 "config_thr": .6,
+                 "iou_thr": .5,
+                 "persist": True,
+                 "verbose": True
+                 }
+    fire_label = 1
+    smoke_label = 2
+    model = YOLOv8(**configure)
 
-    network, class_names, class_colors = \
-        darknet.load_network(
-            os.path.join(pwd, "files/cfg/yolov4-tiny-custom.cfg"),
-            os.path.join(pwd, "files/data/obj.data"),
-            os.path.join(pwd, "files/weights/yolov4-tiny-custom_8000.weights"),
-            batch_size=1
-        )
+    # network, class_names, class_colors = \
+    #     darknet.load_network(
+    #         os.path.join(pwd, "files/cfg/yolov4-tiny-custom.cfg"),
+    #         os.path.join(pwd, "files/data/obj.data"),
+    #         os.path.join(pwd, "files/weights/yolov4-tiny-custom_8000.weights"),
+    #         batch_size=1
+    #     )
     # ---- model load end ---- #
 
     try:
@@ -59,28 +59,28 @@ def main():
                 index = 0
             point = alarm[index]
         try:
-            image, detections = image_detection(point.frame, network, class_names, class_colors, 0.50)
+            # image, detections = image_detection(point.frame, network, class_names, class_colors, 0.50)
 
-            # detected = model.predict(point.frame)
-            # label = detected.boxes.cls.cpu().numpy()
+            detected = model.predict(point.frame)
+            label = detected.boxes.cls.cpu().numpy()
 
             fire = 0
             smoke = 0
 
-            for label, confidence, bbox in detections:
-                if label == 'fire':
-                    fire += 1
-                    point.alarm_status += 1
-                if label == 'Smoke':
-                    smoke += 1
-                    point.alarm_status += 1
+            # for label, confidence, bbox in detections:
+            #     if label == 'fire':
+            #         fire += 1
+            #         point.alarm_status += 1
+            #     if label == 'Smoke':
+            #         smoke += 1
+            #         point.alarm_status += 1
 
-            # if fire_label in label:
-            #     fire_label += 1
-            #     point.alarm_status += 1
-            # if smoke_label in label:
-            #     smoke_label += 1
-            #     point.alarm_status += 1
+            if fire_label in label:
+                fire_label += 1
+                point.alarm_status += 1
+            if smoke_label in label:
+                smoke_label += 1
+                point.alarm_status += 1
 
             if fire > smoke:
                 point.alarm_object = 'Fire'
