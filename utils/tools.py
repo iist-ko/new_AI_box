@@ -105,6 +105,7 @@ class Alarm:
             if response.status_code == 200:
                 self.cam.release()
                 self.cam = cv2.VideoCapture(self.rtsp)
+            print(response.status_code)
             self.disconnect_cam()
             self.default_set()
             return True
@@ -116,8 +117,7 @@ class Alarm:
         if not ret:
             print(f"frame read error {self.error_count}")
             con_ = self.reconnect_cam()
-            if not con_:
-                self.error_count += 1
+            self.error_count += 1
             if self.error_count == 10:
                 f = open(os.path.join(pwd, "files/resource/log.txt"), 'a')
                 f.write(f"{self.ip} reconnect_cam")
